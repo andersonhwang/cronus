@@ -1,4 +1,13 @@
-﻿using Cronus.Enum;
+﻿/****************************************************
+ *          Cronus - ESL Gen3 Middleware            *
+ **************************************************** 
+ * File:    AP.cs
+ * Date:    05/26/2022
+ * Author:  Huang Hai Peng
+ * Summary: This class is the AP object class of Cronus.
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+using Cronus.Enum;
 
 namespace Cronus.Model
 {

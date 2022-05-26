@@ -1,4 +1,14 @@
-﻿using Cronus.Enum;
+﻿/****************************************************
+ *          Cronus - ESL Gen3 Middleware            *
+ **************************************************** 
+ * File:    APStatusEventArgs.cs
+ * Date:    05/19/2022
+ * Author:  Huang Hai Peng
+ * Summary: 
+ *  The ap status event args.
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+using Cronus.Enum;
 
 namespace Cronus.Events
 {

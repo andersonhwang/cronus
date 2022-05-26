@@ -1,4 +1,13 @@
-﻿using Cronos.SDK.Entity;
+﻿/****************************************************
+ *          Cronus - ESL Gen3 Middleware            *
+ **************************************************** 
+ * File:    Tag.cs
+ * Date:    05/19/2022
+ * Author:  Huang Hai Peng
+ * Summary: This class is the tag object class of Cronus.
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+using Cronos.SDK.Entity;
 using Cronos.SDK.Enum;
 using Cronus.Enum;
 

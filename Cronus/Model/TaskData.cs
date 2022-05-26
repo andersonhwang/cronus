@@ -1,4 +1,13 @@
-﻿namespace Cronus.Model
+﻿/****************************************************
+ *          Cronus - ESL Gen3 Middleware            *
+ **************************************************** 
+ * File:    TaskData.cs
+ * Date:    05/19/2022
+ * Author:  Huang Hai Peng
+ * Summary: The task data object class.
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+namespace Cronus.Model
 {
     /// <summary>
     /// Task data object

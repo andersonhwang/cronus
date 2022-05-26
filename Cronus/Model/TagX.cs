@@ -1,6 +1,16 @@
-﻿using Cronos.SDK;
+﻿/****************************************************
+ *          Cronus - ESL Gen3 Middleware            *
+ **************************************************** 
+ * File:    TagX.cs
+ * Date:    05/19/2022
+ * Author:  Huang Hai Peng
+ * Summary: 
+ *  This class is the tag linker object class of Cronus.
+ *  It contains tag, and tag data, tag result contents.
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+using Cronos.SDK;
 using Cronos.SDK.Entity;
-using Cronus.Enum;
 
 namespace Cronus.Model
 {
@@ -168,10 +178,11 @@ namespace Cronus.Model
         }
 
         /// <summary>
-        /// Need work
+        /// Need work:
+        /// Has task data, not success, and try count less than 256.
         /// </summary>
         /// <returns>Need</returns>
-        internal bool NeedWork() => ((BToken != -1 && B.Status != Enum.TaskStatus.Success && B.SendCount < 256) || AToken != BToken);
+        internal bool NeedWork() => (BToken != -1 && B.Status != Enum.TaskStatus.Success && B.SendCount < 256) || AToken != BToken;
 
         /// <summary>
         /// Is working

@@ -17,6 +17,7 @@ using Cronus.Enum;
 using Cronus.Events;
 using Cronus.Model;
 using Microsoft.Extensions.Logging;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 using Serilog;
 using SkiaSharp;
 
@@ -34,7 +35,7 @@ namespace Cronus
         readonly Dictionary<string, AP> DicAPs = new();                 // AP dictionary
         readonly Dictionary<string, TagX> DicTagXs = new();             // TagX dictionary
         readonly ConcurrentQueue<TaskResult> CoqTaskResults = new();    // Task results queue
-        static Microsoft.Extensions.Logging.ILogger _logger;            // Logger
+        static ILogger _logger;         // Logger
         static CronusConfig _config;    // Configure
         static SendServer _instance;    // Instance of send server
 
@@ -55,12 +56,12 @@ namespace Cronus
         /// <summary>
         /// The task event handler
         /// </summary>
-        internal EventHandler<TaskResultEventArgs> TaskHandler { get; private set; }
+        internal EventHandler<TaskResultEventArgs>? TaskHandler { get; private set; }
 
         /// <summary>
         /// The AP event handler
         /// </summary>
-        internal EventHandler<APStatusEventArgs> APHandler { get; private set; }
+        internal EventHandler<APStatusEventArgs>? APHandler { get; private set; }
 
         /// <summary>
         /// Task event handler
@@ -88,7 +89,7 @@ namespace Cronus
         /// <param name="config">Cronus configure</param>
         /// <param name="log">ILogger</param>
         /// <returns>Result</returns>
-        public Result Start(CronusConfig config, Microsoft.Extensions.Logging.ILogger log = null)
+        public Result Start(CronusConfig config, ILogger log = null)
         {
             try
             {
@@ -127,7 +128,26 @@ namespace Cronus
         /// <returns>Attach result</returns>
         public Result BasicData(List<Tag> tags)
         {
-            return Result.OK;
+            try
+            {
+                lock (_locker)
+                {
+                    if (tags is null) return Result.NullData;
+                    tags.ForEach(x =>
+                    {
+                        if (!DicTagXs.ContainsKey(x.TagID))
+                        {
+                            DicTagXs.Add(x.TagID, new TagX(x));
+                        }
+                    });
+                    return Result.OK;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Basic_Data_Error");
+                return Result.Error;
+            }
         }
 
         #region Task Import

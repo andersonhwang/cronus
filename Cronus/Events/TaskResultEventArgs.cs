@@ -1,4 +1,14 @@
-﻿using Cronus.Model;
+﻿/****************************************************
+ *          Cronus - ESL Gen3 Middleware            *
+ **************************************************** 
+ * File:    TaskResultEventArgs.cs
+ * Date:    05/19/2022
+ * Author:  Huang Hai Peng
+ * Summary: 
+ *  The tag result event args.
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+using Cronus.Model;
 
 namespace Cronus.Events
 {

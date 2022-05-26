@@ -1,16 +1,10 @@
 ﻿/****************************************************
  *          Cronus - ESL Gen3 Middleware            *
  **************************************************** 
+ * File:    TaskResult.cs
  * Date:    05/19/2022
  * Author:  Huang Hai Peng
- * Summary: 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * Summary: The task result object class.
  * (C) Suzhou ETAG Electronic Technology Co., Ltd
 ****************************************************/
 

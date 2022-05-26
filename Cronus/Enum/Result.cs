@@ -1,6 +1,9 @@
 ﻿
 namespace Cronus.Enum
 {
+    /// <summary>
+    /// The result
+    /// </summary>
     public enum Result
     {
         OK,
@@ -9,6 +12,7 @@ namespace Cronus.Enum
         InvalidApId,
         InlivadTaskData,
         InvalidImage,
+        NullData,
         Error,
         NoTaskCreate,
         NotAllTaskCreate,

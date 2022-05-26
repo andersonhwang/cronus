@@ -1,4 +1,13 @@
-﻿namespace Cronus
+﻿/****************************************************
+ *          Cronus - ESL Gen3 Middleware            *
+ **************************************************** 
+ * File:    SendServer
+ * Date:    05/19/2022
+ * Author:  Huang Hai Peng
+ * Summary: Configuration object class of Cronus.
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+namespace Cronus
 {
     /// <summary>
     /// Cronus configure object
