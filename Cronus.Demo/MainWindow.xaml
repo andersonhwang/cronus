@@ -1,0 +1,46 @@
+﻿<Window x:Class="Cronus.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cronus.Demo"
+        mc:Ignorable="d" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="Cronus Demo" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="Run Cronus">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="AP Port:"/>
+                <TextBox Grid.Column="1" Name="txtPort"/>
+                <Button Grid.Column="3" Grid.Row="0" Name="btnStart" Content="Start" Click="btnStart_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="AP List">
+            <ListView x:Name="lvAPs" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button x:Name="btnAPID" Width="80" Height="24" Style="{StaticResource ap}" Content="{Binding APID}" CommandParameter="{Binding APStatus}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Header="Tag List">
+            
+        </GroupBox>
+    </Grid>
+</Window>
