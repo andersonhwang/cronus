@@ -30,8 +30,8 @@ namespace Cronus
     {
         #region Properties
         readonly object _locker = new();    // The locker
-        readonly Regex RegTagID = new Regex("^[0-9A-F]{12}$");
-        readonly Regex RegStoreCode = new Regex("^[0-9]{4}$");
+        readonly Regex RegTagID = new("^[0-9A-F]{12}$");
+        readonly Regex RegStoreCode = new("^[0-9]{4}$");
         readonly Dictionary<string, AP> DicAPs = new();                 // AP dictionary
         readonly Dictionary<string, TagX> DicTagXs = new();             // TagX dictionary
         readonly ConcurrentQueue<TaskResult> CoqTaskResults = new();    // Task results queue
@@ -276,23 +276,54 @@ namespace Cronus
             idList.ForEach(x => { tasks.Add(new TaskData(x, r, g, b, times)); });
             return Push(storeCode, tasks);
         }
+        #endregion
 
+        #region Broadcast
         /// <summary>
         /// Broadcast: Switch page
         /// </summary>
-        /// <param name="storeCode"></param>
-        /// <param name="page"></param>
-        /// <returns></returns>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="page">Page to dispaly, from 0 to 3/7</param>
+        /// <remarks>Some types have 4 pages cache, some types have 8 pages cahce. Please read the product introduce document.</remarks>
+        /// <returns>Result</returns>
         public Result SwitchPage(string storeCode, int page)
         {
             try
             {
-                if (Server.Instance.GetApOnlineList(storeCode).Count == 0) return Result.NoApOnline;
+                var check = CheckBroadcast(storeCode);
+                if (check != Result.OK) return check;
 
                 foreach (var ap in Server.Instance.GetApOnlineList(storeCode))
                 {
                     var result = Server.Instance.SwitchPage(ap, 0, page);
                     _logger.LogInformation($"[Cronus]SwitchPage to page {page}, {ap}:{result}.");
+                }
+
+                return Result.OK;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "[Cronus]Swicth_Page_Error");
+                return Result.Error;
+            }
+        }
+
+        /// <summary>
+        /// Broadcast: Display the ID barcode of the tag on its screen.
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <returns>Result</returns>
+        public Result DisplayBarcode(string storeCode)
+        {
+            try
+            {
+                var check = CheckBroadcast(storeCode);
+                if (check != Result.OK) return check;
+
+                foreach (var ap in Server.Instance.GetApOnlineList(storeCode))
+                {
+                    var result = Server.Instance.DisplayBarcode(ap, 0); // Default token is 0.
+                    _logger.LogInformation($"[Cronus]Display barcode, {ap}:{result}.");
                 }
 
                 return Result.OK;
@@ -472,6 +503,13 @@ namespace Cronus
                 return DicTagXs[tagID];
             }
         }
+
+        Result CheckBroadcast(string storeCode)
+        {
+            if (Server.Instance.GetApOnlineList(storeCode).Count == 0) return Result.NoApOnline;
+            if (Server.Instance.GetApWorkingList(storeCode).Count > 0) return Result.APBusying;
+            return Result.OK;
+        }
         #endregion
 
         #region AP
@@ -516,14 +554,13 @@ namespace Cronus
         /// <param name="port">AP Port</param>
         /// <param name="logger">Logger</param>
         /// <returns>Start SDK result</returns>
-        public bool StartSDK(int port, Microsoft.Extensions.Logging.ILogger logger)
+        bool StartSDK(int port, ILogger logger)
         {
             try
             {
-
+                var result = Server.Instance.Start(logger, port);
                 Server.Instance.ApEventHandler += Instance_ApEventHandler; ;
                 Server.Instance.ResultEventHandler += Instance_ResultEventHandler;
-                var result = Server.Instance.Start(logger, port);
                 _logger.LogInformation("[Cronus]Send SDK:" + result);
                 return result == SdkResult.OK;
             }

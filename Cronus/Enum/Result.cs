@@ -17,6 +17,7 @@ namespace Cronus.Enum
         NoTaskCreate,
         NotAllTaskCreate,
         NoApOnline,
-        NoApIdle
+        NoApIdle,
+        APBusying
     }
 }

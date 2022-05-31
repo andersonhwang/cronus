@@ -5,11 +5,11 @@
     /// </summary>
     public enum APStatus
     {
-        Init,
-        Online,
-        Heartbeat,
-        Working,
-        Offline,
-        Error
+        Init = 0,
+        Online = 1,
+        Working = 2,
+        Offline = 3,
+        Error = 4,
+        Heartbeat = 5,
     }
 }

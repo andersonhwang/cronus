@@ -15,7 +15,7 @@ using Cronos.SDK.Entity;
 namespace Cronus.Model
 {
     /// <summary>
-    /// Tag with A&B
+    /// Tag linker with A&B
     /// </summary>
     internal class TagX
     {

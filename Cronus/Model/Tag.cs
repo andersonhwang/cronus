@@ -8,7 +8,6 @@
  * (C) Suzhou ETAG Electronic Technology Co., Ltd
 ****************************************************/
 using Cronos.SDK.Entity;
-using Cronos.SDK.Enum;
 using Cronus.Enum;
 
 namespace Cronus.Model
@@ -95,7 +94,7 @@ namespace Cronus.Model
         /// </summary>
         /// <param name="tagID">Tag ID</param>
         /// <param name="storeCode">Store code</param>
-        internal Tag(string tagID, string storeCode)
+        public Tag(string tagID, string storeCode)
         {
             TagID = tagID;
             StoreCode = storeCode;
@@ -121,7 +120,7 @@ namespace Cronus.Model
         {
             Token = result.Token;
             LastRecvTime = DateTime.Now;
-            if(result.TagResult == TagResult.Success)
+            if(result.TagResult == Cronos.SDK.Enum.TagResult.Success)
             {
                 DefaultAP = ap;
                 RfPower = result.RfPower;

@@ -9,7 +9,6 @@
 ****************************************************/
 
 using Cronos.SDK.Entity;
-using Cronos.SDK.Enum;
 
 namespace Cronus.Model
 {
@@ -123,7 +122,7 @@ namespace Cronus.Model
         {
             bool needReturn = false;
             // Drop obsolete result
-            if (Status == Enum.TaskStatus.Success && result.TagResult == TagResult.Faild) return needReturn;
+            if (Status == Enum.TaskStatus.Success && result.TagResult == Cronos.SDK.Enum.TagResult.Faild) return needReturn;
             // Only keep last 10 route records
             while (RouteRecord.Count > 10) RouteRecord.RemoveAt(0);
 
@@ -131,7 +130,7 @@ namespace Cronus.Model
             RfPower = result.RfPower;
             Battery = result.Battery;
             Temperature = result.Temperature;
-            if (result.TagResult == TagResult.Success)
+            if (result.TagResult == Cronos.SDK.Enum.TagResult.Success)
             {
                 if(Status != Enum.TaskStatus.Success) needReturn = true;
                 Status = Enum.TaskStatus.Success;
