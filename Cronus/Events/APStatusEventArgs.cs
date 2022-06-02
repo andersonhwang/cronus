@@ -18,16 +18,28 @@ namespace Cronus.Events
     public class APStatusEventArgs : EventArgs
     {
         /// <summary>
-        /// AP ID
-        /// </summary>
-        public string APID { get; private set; }
-        /// <summary>
         /// Store code
         /// </summary>
         public string StoreCode { get; private set; }
         /// <summary>
+        /// AP ID
+        /// </summary>
+        public string APID { get; private set; }
+        /// <summary>
         /// AP status
         /// </summary>
         public APStatus Status { get; private set; }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="ap">AP ID</param>
+        /// <param name="status">AP Status</param>
+        public APStatusEventArgs(string storeCode, string ap, APStatus status)
+        {
+            StoreCode = storeCode;
+            APID = ap;
+            Status = status;
+        }
     }
 }

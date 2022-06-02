@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cronus.Demo"
         mc:Ignorable="d" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Title="Cronus Demo - Single Store Mode" Height="450" Width="800">
+        Title="Cronus Demo - Single Store Mode" Height="556" Width="900">
     <Window.Resources>
         <Style TargetType="Button" x:Key="ap">
             <Style.Triggers>
@@ -36,6 +36,10 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="Label" x:Key="lbl">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
         <Style TargetType="DataGridColumnHeader" x:Key="hdr">
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
@@ -46,8 +50,8 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
-            <RowDefinition Height="48"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="55"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <GroupBox Grid.Row="0" Grid.Column="0" Header="Run Cronus">
@@ -58,7 +62,7 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="AP Port:"/>
+                <Label Grid.Column="0" Content="AP Port:" Style="{StaticResource lbl}"/>
                 <TextBox Grid.Column="1" Name="txtPort" Text="1234" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
                 <Button Grid.Column="3" Grid.Row="0" Name="btnStart" Content="Start" Click="btnStart_Click"/>
             </Grid>
@@ -71,8 +75,8 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0">Page Cache:</Label>
-                <ComboBox Grid.Column="1" x:Name="cobPage">
+                <Label Grid.Column="0" Style="{StaticResource lbl}">Page Cache:</Label>
+                <ComboBox Grid.Column="1" x:Name="cobPage" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold">
                     <ComboBoxItem Content="0"/>
                     <ComboBoxItem Content="1"/>
                     <ComboBoxItem Content="2"/>
@@ -95,7 +99,7 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button x:Name="btnAPID" Width="80" Height="24" Style="{StaticResource ap}" Content="{Binding APID}" CommandParameter="{Binding APStatus}"/>
+                        <Button x:Name="btnAPID" Width="80" Height="24" Style="{StaticResource ap}" Content="{Binding ID}" CommandParameter="{Binding APStatus}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

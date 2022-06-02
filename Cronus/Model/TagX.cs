@@ -28,6 +28,10 @@ namespace Cronus.Model
         /// </summary>
         internal string TagID => Tag.TagID;
         /// <summary>
+        /// Store code
+        /// </summary>
+        internal string StoreCode => Tag.StoreCode;
+        /// <summary>
         /// The tag
         /// </summary>
         internal Tag Tag { get; private set; }

@@ -32,9 +32,10 @@ namespace Cronus
         readonly object _locker = new();    // The locker
         readonly Regex RegTagID = new("^[0-9A-F]{12}$");
         readonly Regex RegStoreCode = new("^[0-9]{4}$");
-        readonly Dictionary<string, AP> DicAPs = new();                 // AP dictionary
-        readonly Dictionary<string, TagX> DicTagXs = new();             // TagX dictionary
-        readonly ConcurrentQueue<TaskResult> CoqTaskResults = new();    // Task results queue
+        readonly Dictionary<string, Dictionary<string, AP>> DicAPs = new(); // AP dictionary
+        readonly Dictionary<string, TagX> DicTagXs = new();                 // TagX dictionary
+        readonly ConcurrentQueue<TaskResult> CoqTaskResults = new();        // Task results queue
+        readonly ConcurrentQueue<APStatusEventArgs> CoqAPEvents = new();    // AP events queue
         static ILogger _logger;         // Logger
         static CronusConfig _config;    // Configure
         static SendServer _instance;    // Instance of send server
@@ -109,6 +110,7 @@ namespace Cronus
                 if (!result) return Result.Error;
                 Task.Run(async () => { await TaskDispatcher(); });
                 Task.Run(async () => { await TaskFeedback(); });
+                Task.Run(async () => { await APFeedback(); });
 
                 _logger.LogInformation($"[Cronus]Start OK.(Build:{version})");
 
@@ -295,8 +297,12 @@ namespace Cronus
 
                 foreach (var ap in Server.Instance.GetApOnlineList(storeCode))
                 {
-                    var result = Server.Instance.SwitchPage(ap, 0, page);
-                    _logger.LogInformation($"[Cronus]SwitchPage to page {page}, {ap}:{result}.");
+                    var result = Server.Instance.SwitchPage(storeCode, ap, 0, page);
+                    if (result == SdkResult.OK)
+                    {
+                        CoqAPEvents.Enqueue(new APStatusEventArgs(storeCode, ap, APStatus.Working));
+                    }
+                    _logger.LogInformation($"[Cronus]SwitchPage to page {page}, {storeCode}-{ap}:{result}.");
                 }
 
                 return Result.OK;
@@ -322,8 +328,12 @@ namespace Cronus
 
                 foreach (var ap in Server.Instance.GetApOnlineList(storeCode))
                 {
-                    var result = Server.Instance.DisplayBarcode(ap, 0); // Default token is 0.
-                    _logger.LogInformation($"[Cronus]Display barcode, {ap}:{result}.");
+                    var result = Server.Instance.DisplayBarcode(storeCode, ap, 0); // Default token is 0.
+                    if (result == SdkResult.OK)
+                    {
+                        CoqAPEvents.Enqueue(new APStatusEventArgs(storeCode, ap, APStatus.Working));
+                    }
+                    _logger.LogInformation($"[Cronus]Display barcode, {storeCode}-{ap}:{result}.");
                 }
 
                 return Result.OK;
@@ -354,11 +364,11 @@ namespace Cronus
         /// </summary>
         /// <param name="storeCode">Store code, empty means global</param>
         /// <returns>AP list</returns>
-        public List<AP> GetAPList(string storeCode = "")
+        public List<AP> GetAPList(string storeCode)
         {
-            return string.IsNullOrEmpty(storeCode)
-                ? DicAPs.Values.ToList()
-                : DicAPs.Where(x => x.Key[..4] == storeCode).Select(x => x.Value).ToList();
+            return DicAPs.ContainsKey(storeCode)
+                ? DicAPs[storeCode].Values.ToList()
+                : new List<AP>();
         }
         #endregion
         #endregion
@@ -377,49 +387,59 @@ namespace Cronus
                 try
                 {
                     await Task.Delay(2000);
-                    // No tag load
-                    if (DicTagXs.Count == 0) continue;
+                    // No AP connect or no tag load
+                    if (DicAPs.Count == 0 || DicTagXs.Count == 0) continue;
+                    // Prepare task collection to send
+                    // Store code->AP ID->Tasks
+                    var tasks = new Dictionary<string, Dictionary<string, List<TagEntityX>>>();
                     // No AP online
-                    var aps = Server.Instance.GetApIdleList();
-                    if (aps.Count == 0)
+                    foreach (var store in DicAPs.Keys)
                     {
-                        noAP++; if (noAP >= 1000)
+                        var aps = Server.Instance.GetApIdleList(store);
+                        if (aps.Count == 0)
                         {
-                            noAP = 0;
-                            Log.Error("[Cronus]Longtime_No_Ap.");
+                            noAP++; if (noAP >= 1000)
+                            {
+                                noAP = 0;
+                                Log.Error($"[Cronus]Longtime_No_Ap:{store}");
+                            }
+                            continue;
                         }
-                        continue;
+                        tasks.Add(store, new Dictionary<string, List<TagEntityX>>());
+                        foreach (var ap in aps) tasks[store].Add(ap, new List<TagEntityX>());
                     }
+                    noAP = 0;
 
-                    var tasks = new Dictionary<string, List<TagEntityX>>();
-                    aps.ForEach(ap => tasks.Add(ap, new List<TagEntityX>()));
                     lock (_locker)
                     {
                         // Last first
                         var tags = DicTagXs.Values
-                            .Where(x => x.NeedWork(aps))
+                            .Where(x => DicAPs.ContainsKey(x.StoreCode) && x.NeedWork(DicAPs[x.StoreCode].Keys.ToList()))
                             .OrderBy(x => x.LastSend);
 
                         foreach (var tag in tags)
                         {
-                            foreach (var ap in aps)
+                            foreach (var ap in DicAPs[tag.StoreCode].Keys)
                             {
-                                if (tag.SameWay(ap) && tasks[ap].Count < 208)
+                                if (tag.SameWay(ap) && tasks[tag.StoreCode].Count < 208)
                                 {
-                                    var now = tasks[ap].Sum(x => x.Data.Length);
+                                    var now = tasks[tag.StoreCode][ap].Sum(x => x.Data.Length);
                                     if ((now + tag.TagData.Data.Length) > 524_288) continue;
-                                    tasks[ap].Add(tag.TagData);
+                                    tasks[tag.StoreCode][ap].Add(tag.TagData);
                                     tag.Transfer(ap);
                                 }
                             }
                         }
 
-                        foreach (var ap in aps)
+                        foreach (var store in tasks.Keys)
                         {
-                            if (tasks[ap].Count == 0) continue;
-                            var result = Server.Instance.SendDataX(ap, tasks[ap]);
-                            Log.Information($"[Cronus]{ap} send {tasks[ap].Count}: {result}");
-                            if (result == SdkResult.OK) UpdateAP(ap, tasks[ap].Count);
+                            foreach (var ap in tasks[store].Keys)
+                            {
+                                if (tasks[store][ap].Count == 0) continue;
+                                var result = Server.Instance.SendDataX(store, ap, tasks[store][ap]);
+                                Log.Information($"[Cronus]{store}-{ap} send {tasks[store][ap].Count}: {result}");
+                                if (result == SdkResult.OK) UpdateAP(store, ap, tasks[store][ap].Count);
+                            }
                         }
                     }
 
@@ -487,6 +507,47 @@ namespace Cronus
         }
 
         /// <summary>
+        /// Thread: AP status feedback
+        /// </summary>
+        /// <returns>The task</returns>
+        async Task APFeedback()
+        {
+            Exception pre = new();
+            int count = 0;
+            while (true)
+            {
+                try
+                {
+                    if (CoqAPEvents.IsEmpty)
+                    {
+                        await Task.Delay(2000);
+                        continue;
+                    }
+
+                    if (CoqAPEvents.TryDequeue(out var ap))
+                    {
+                        APHandler?.Invoke(null, ap);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (pre.Message != ex.Message)
+                    {
+                        Log.Error(ex, "LOOP_ERROR.");
+                        count = 0;
+                    }
+                    else if (count > 999)
+                    {
+                        Log.Error(ex, "LOOP_ERROR_LONG.");
+                        count = 0;
+                        continue;
+                    }
+                    count++;
+                }
+            }
+        }
+
+        /// <summary>
         /// Get tagx by tag ID
         /// </summary>
         /// <param name="tagID">Tag ID</param>
@@ -504,6 +565,11 @@ namespace Cronus
             }
         }
 
+        /// <summary>
+        /// Broadcast realtime check: online, and idle
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <returns>Check result</returns>
         Result CheckBroadcast(string storeCode)
         {
             if (Server.Instance.GetApOnlineList(storeCode).Count == 0) return Result.NoApOnline;
@@ -521,26 +587,39 @@ namespace Cronus
         List<string> GetAPs(string storeCode) => Server.Instance.GetApOnlineList(storeCode);
 
         /// <summary>
-        /// 
+        /// Get AP
         /// </summary>
-        /// <param name="apID"></param>
-        /// <returns></returns>
-        AP GetAP(string apID)
+        /// <param name="storeCode">Store code</param>
+        /// <param name="apID">AP ID</param>
+        /// <returns>The AP</returns>
+        AP GetAP(string storeCode, string apID)
         {
-            if (DicAPs.ContainsKey(apID)) return DicAPs[apID];
-            var ap = new AP { APID = apID };
-            DicAPs.Add(apID, ap);
-            return ap;
+            if (!DicAPs.ContainsKey(storeCode))
+            {
+                DicAPs.Add(storeCode, new Dictionary<string, AP>());
+            }
+
+            if (DicAPs[storeCode].ContainsKey(apID))
+            {
+                return DicAPs[storeCode][apID];
+            }
+            else
+            {
+                var ap = new AP { StoreCode = storeCode, APID = apID };
+                DicAPs[storeCode].Add(apID, ap);
+                return ap;
+            }
         }
 
         /// <summary>
         /// Update AP working status
         /// </summary>
-        /// <param name="apID"></param>
-        /// <param name="count"></param>
-        void UpdateAP(string apID, int count)
+        /// <param name="storeCode">Store code</param>
+        /// <param name="apID">AP ID</param>
+        /// <param name="count">Current task count</param>
+        void UpdateAP(string storeCode, string apID, int count)
         {
-            var ap = GetAP(apID);
+            var ap = GetAP(storeCode, apID);
             ap.APStatus = APStatus.Working;
             ap.CurrentTasks = count;
             ap.LastSendTime = DateTime.Now;
@@ -582,7 +661,7 @@ namespace Cronus
             {
                 lock (_locker)
                 {
-                    var ap = GetAP(e.ApID);
+                    var ap = GetAP(e.StoreCode, e.ApID);
                     switch (e.EventType)
                     {
                         case ApEventType.Online:
@@ -603,7 +682,8 @@ namespace Cronus
                             break;
                         default: break;
                     }
-                    DicAPs[e.ApID] = ap;
+                    DicAPs[e.StoreCode][e.ApID] = ap;
+                    CoqAPEvents.Enqueue(new APStatusEventArgs(ap.StoreCode, ap.APID, ap.APStatus));
                 }
             }
             catch (Exception ex)
@@ -623,6 +703,7 @@ namespace Cronus
             {
                 lock (_locker)
                 {
+                    CoqAPEvents.Enqueue(new APStatusEventArgs(e.StoreCode, e.ApID, APStatus.Online));
                     foreach (var result in from result in e.ResultList
                                            where DicTagXs.ContainsKey(result.TagID)
                                            where DicTagXs[result.TagID].WriteB(e.ApID, result)

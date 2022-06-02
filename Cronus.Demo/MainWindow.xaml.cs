@@ -41,6 +41,7 @@ namespace Cronus.Demo
             {
                 lvAPs.ItemsSource = ObcAPInfors;
                 dgTags.ItemsSource = ObcTagInfors;
+                cobPage.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -73,6 +74,11 @@ namespace Cronus.Demo
                 {
                     MessageBox.Show("Start failed:" + result);
                 }
+                else
+                {
+                    btnStart.IsEnabled = false;
+                    btnStart.Content = "Running...";
+                }
             }
             catch (Exception ex)
             {
@@ -103,7 +109,7 @@ namespace Cronus.Demo
                 }
                 else if (result == Enum.Result.OK)
                 {
-                    MessageBox.Show($"[Broadcast]Switch page to #{cobPage.SelectedIndex}: OK");
+                    MessageBox.Show($"Switch page to #{cobPage.SelectedIndex}: OK", "Broadcast");
                 }
             }
             catch (Exception ex)
@@ -135,7 +141,7 @@ namespace Cronus.Demo
                 }
                 else if (result == Enum.Result.OK)
                 {
-                    MessageBox.Show("[Broadcast]Display barcode: OK");
+                    MessageBox.Show("Display barcode: OK", "Broadcast");
                 }
             }
             catch (Exception ex)
@@ -168,20 +174,20 @@ namespace Cronus.Demo
         {
             try
             {
-                if(ObcTagInfors.Count == 0)
+                if (ObcTagInfors.Count == 0)
                 {
                     MessageBox.Show("There is no tag to send image!");
                     return;
                 }
 
                 var ids = new List<string>();
-                if(dgTags.SelectedItems.Count == 0)
+                if (dgTags.SelectedItems.Count == 0)
                 {
                     ids.AddRange(ObcTagInfors.Select(x => x.TagID).ToList());
                 }
                 else
                 {
-                    foreach(var item in dgTags.SelectedItems)
+                    foreach (var item in dgTags.SelectedItems)
                     {
                         var tag = item as TagInfor;
                         ids.Add(tag.TagID);
@@ -296,12 +302,10 @@ namespace Cronus.Demo
             {
                 lock (_locker)
                 {
-                    var add = false;
-                    var ap = ObcAPInfors.FirstOrDefault(x => x.APID == e.APID);
-                    if (ap is null)
-                    {
-                        ap = new APInfor { APID = e.APID, APStatus = e.Status };
-                    }
+                    var add = !ObcAPInfors.Any(x => x.StoreCode == e.StoreCode && x.APID == e.APID);
+                    var ap = add
+                        ? new APInfor { StoreCode = e.StoreCode, APID = e.APID, APStatus = e.Status }
+                        : ObcAPInfors.First(x => x.StoreCode == e.StoreCode && x.APID == e.APID);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
