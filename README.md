@@ -10,12 +10,18 @@ The Cronus/Cronus.Demo folder is a WPF desktop demo to using Cronus/Cronus.
 ## Quick start:
 0. Add project reference;
 1. Register AP status changed event and Task feedback event:
-```SendServer.Instance.APEventHandler += Instance_APEventHandler;```
-```SendServer.Instance.TaskEventHandler += Instance_TaskEventHandler;```
+```
+SendServer.Instance.APEventHandler += Instance_APEventHandler;
+SendServer.Instance.TaskEventHandler += Instance_TaskEventHandler;
+```
 2. Start the Sendserver:
-```var result = SendServer.Instance.Start(_config, _logger);```
+```
+var result = SendServer.Instance.Start(_config, _logger);
+```
 3. Send a image to the ESL:
-```var result = SendServer.Instance.Send(tagID, image);```
+```
+var result = SendServer.Instance.Send(tagID, image);
+```
 
 For more information, please read the D19 documet.
 Some sections are still under construct, for issues and bugs please let me know, thanks.
