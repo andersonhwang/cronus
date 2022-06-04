@@ -30,7 +30,7 @@ namespace Cronus.Model
         /// <summary>
         /// FK, refer to Task Token
         /// </summary>
-        public string TaskID { get; set; }
+        public Guid TaskID { get; set; } = Guid.Empty;
         /// <summary>
         /// FK, refer to Shop.SHOP_CODE
         /// </summary>
@@ -46,7 +46,7 @@ namespace Cronus.Model
         /// <summary>
         /// Power value
         /// </summary>
-        public int Battery { get; set; }
+        public float Battery { get; set; }
         /// <summary>
         /// Temperature
         /// </summary>
@@ -62,15 +62,15 @@ namespace Cronus.Model
         /// <summary>
         /// Total send count
         /// </summary>
-        public int TotalSend { get; set; }
+        public int TotalSend { get; set; } = 0;
         /// <summary>
         /// Error count (total)
         /// </summary>
-        public int ErrorCount { get; set; }
+        public int ErrorCount { get; set; } = 0;
         /// <summary>
         /// Error count (temporary)
         /// </summary>
-        public int ErrorCountTemp { get; set; }
+        public int ErrorCountTemp { get; set; } = 0;
         /// <summary>
         /// Last send time
         /// </summary>
@@ -127,8 +127,8 @@ namespace Cronus.Model
                 TagStatus = TagStatus.Idle;
                 ErrorCountTemp = 0;
                 Temperature = result.Temperature;
-                Battery = result.Battery;
-                if (Battery < 24) TagStatus = TagStatus.LowPower;
+                Battery = result.Battery / 10F;
+                if (Battery < 2.4F) TagStatus = TagStatus.LowPower;
             }
             else
             {

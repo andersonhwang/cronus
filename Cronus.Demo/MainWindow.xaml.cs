@@ -68,7 +68,7 @@ namespace Cronus.Demo
                 _config.APPort = port;
                 SendServer.Instance.APEventHandler += Instance_APEventHandler;
                 SendServer.Instance.TaskEventHandler += Instance_TaskEventHandler;
-                var result = SendServer.Instance.Start(new CronusConfig(), _logger);
+                var result = SendServer.Instance.Start(_config, _logger);
                 _logger.LogInformation("Try to start send server: " + result);
                 if (result != Enum.Result.OK)
                 {

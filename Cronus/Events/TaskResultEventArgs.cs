@@ -20,6 +20,6 @@ namespace Cronus.Events
         /// <summary>
         /// Task results list
         /// </summary>
-        public List<TaskResult> TaskResults { get; private set; }
+        public List<TaskResult> TaskResults { get; private set; } = new();
     }
 }

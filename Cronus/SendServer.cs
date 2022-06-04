@@ -251,7 +251,7 @@ namespace Cronus
         }
 
         /// <summary>
-        /// Flashing LED lights
+        /// Flashing LED lights, single store mode
         /// </summary>
         /// <param name="r">Red color</param>
         /// <param name="g">Green color</param>
@@ -263,15 +263,15 @@ namespace Cronus
             => LED(_config.DefaultStoreCode, r, g, b, times, idList);
 
         /// <summary>
-        /// 
+        /// Flashing LED lights
         /// </summary>
-        /// <param name="storeCode"></param>
-        /// <param name="r"></param>
-        /// <param name="g"></param>
-        /// <param name="b"></param>
-        /// <param name="times"></param>
-        /// <param name="idList">ID list, null means global</param>
-        /// <returns></returns>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="r">Red color</param>
+        /// <param name="g">Green color</param>
+        /// <param name="b">Blue color</param>
+        /// <param name="times">Flashing times</param>
+        /// <param name="idList">ID list</param>
+        /// <returns>Result</returns>
         public Result LED(string storeCode, bool r, bool g, bool b, int times, List<string> idList = null)
         {
             var tasks = new List<TaskData>();

@@ -22,7 +22,7 @@
                 <!--2:Working-->
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self},Path=CommandParameter}" Value="2">
                     <Setter Property="Background" Value="GreenYellow"/>
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
                 </DataTrigger>
                 <!--3:Offline-->
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self},Path=CommandParameter}" Value="3">

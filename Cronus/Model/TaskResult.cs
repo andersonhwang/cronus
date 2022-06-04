@@ -57,7 +57,7 @@ namespace Cronus.Model
         /// <summary>
         /// Battery voltage, 31 means 3.1v.
         /// </summary>
-        public int? Battery { get; private set; } = null;
+        public float? Battery { get; private set; } = null;
         /// <summary>
         /// Temperature, 27 mean 27℃
         /// </summary>
@@ -128,7 +128,7 @@ namespace Cronus.Model
 
             RouteRecord.Add(ap);
             RfPower = result.RfPower;
-            Battery = result.Battery;
+            Battery = result.Battery == 0 ? null : result.Battery / 10F;
             Temperature = result.Temperature;
             if (result.TagResult == Cronos.SDK.Enum.TagResult.Success)
             {
