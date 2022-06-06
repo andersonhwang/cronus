@@ -10,9 +10,6 @@
     <Compile Update="AddTagWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controller\ucAP.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="ImageWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -31,9 +28,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controller\ucAP.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
