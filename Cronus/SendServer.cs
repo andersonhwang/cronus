@@ -381,7 +381,7 @@ namespace Cronus
         async Task TaskDispatcher()
         {
             Exception pre = new();
-            int count = 0, noAP = 0, noTag = 0, noWork = 0;
+            int count = 0, noAP = 0, noWork = 0;
             while (true)
             {
                 try
@@ -398,7 +398,7 @@ namespace Cronus
                         var aps = Server.Instance.GetApIdleList(store);
                         if (aps.Count == 0)
                         {
-                            noAP++; if (noAP >= 1000)
+                            noAP++; if (noAP >= 0xFFFF)
                             {
                                 noAP = 0;
                                 Log.Error($"[Cronus]Longtime_No_Ap:{store}");
@@ -416,15 +416,25 @@ namespace Cronus
                         var tags = DicTagXs.Values
                             .Where(x => DicAPs.ContainsKey(x.StoreCode) && x.NeedWork(DicAPs[x.StoreCode].Keys.ToList()))
                             .OrderBy(x => x.LastSend);
+                        if (tags.Count() == 0)
+                        {
+                            noWork++; if (noWork >= 0xFFFF)
+                            {
+                                noWork = 0;
+                                Log.Error("[Cronus]Longtime_No_Work");
+                            }
+                            continue;
+                        }
+                        noWork = 0;
 
                         foreach (var tag in tags)
                         {
                             foreach (var ap in DicAPs[tag.StoreCode].Keys)
                             {
-                                if (tag.SameWay(ap) && tasks[tag.StoreCode].Count < 208)
+                                if (tag.SameWay(ap) && tasks[tag.StoreCode].Count < 0xD0)
                                 {
                                     var now = tasks[tag.StoreCode][ap].Sum(x => x.Data.Length);
-                                    if ((now + tag.TagData.Data.Length) > 524_288) continue;
+                                    if ((now + tag.TagData.Data.Length) > 0x80000) continue;
                                     tasks[tag.StoreCode][ap].Add(tag.TagData);
                                     tag.Transfer(ap);
                                 }
@@ -438,7 +448,14 @@ namespace Cronus
                                 if (tasks[store][ap].Count == 0) continue;
                                 var result = Server.Instance.SendDataX(store, ap, tasks[store][ap]);
                                 Log.Information($"[Cronus]{store}-{ap} send {tasks[store][ap].Count}: {result}");
-                                if (result == SdkResult.OK) UpdateAP(store, ap, tasks[store][ap].Count);
+                                if (result == SdkResult.OK)
+                                {
+                                    UpdateAP(store, ap, tasks[store][ap].Count);
+                                    foreach(var task in tasks[store][ap])
+                                    {
+                                        CoqTaskResults.Enqueue(DicTagXs[task.TagID].B);
+                                    }
+                                }
                             }
                         }
                     }
@@ -455,7 +472,7 @@ namespace Cronus
                         Log.Error(ex, "LOOP_ERROR.");
                         count = 0;
                     }
-                    else if (count > 999)
+                    else if (count > 0xFF)
                     {
                         Log.Error(ex, "LOOP_ERROR_LONG.");
                         count = 0;

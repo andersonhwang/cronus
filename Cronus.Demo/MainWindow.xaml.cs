@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -276,12 +275,15 @@ namespace Cronus.Demo
 
                     var tag = ObcTagInfors.FirstOrDefault(x => x.TagID == item.TagID);
                     if (tag is null) continue;
-                    tag.Token = item.Token;     // Token, please using TaskID(GUID) in your project
-                    tag.RFPower = item.RfPower ?? -256;     // RF power, -256 means empty
-                    tag.Temperature = item.Temperature ?? 0;    // Temperature
-                    tag.Status = item.Status == Enum.TaskStatus.Success ? 2 : 3;    // Tag status
-                    tag.LastRecv = DateTime.Now;    // Last receive time
+                    tag.Token = item.Token;             // Token, please using TaskID(GUID) in your project
+                    tag.RFPower = item.RfPower;         // RF power, -256 means empty
+                    tag.Battery = item.Battery;
+                    tag.Temperature = item.Temperature; // Temperature
+                    tag.Status = item.Status;           // Tag status
+                    tag.LastSend = item.LastSendTime;   // Last send time
+                    tag.LastRecv = item.LastRecvTime;   // Last receive time
                     tag.LastAP = item.RouteRecord.Count > 0 ? item.RouteRecord[0] : ""; // Last AP ID
+                    if (tag.Status == Enum.TaskStatus.Sending) tag.SendCount++;
                 }
             }
             catch (Exception ex)

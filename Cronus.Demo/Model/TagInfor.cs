@@ -22,44 +22,30 @@ namespace Cronus.Demo
         /// Tag type display text
         /// </summary>
         public string TagTypeText { get { return EnumHelper.GetTagType(_tagType); } }
-        int _status = 0;
+        Enum.TaskStatus _status = 0;
         /// <summary>
         /// Status
         /// </summary>
-        public int Status { get { return _status; } set { _status = value; NotifyPropertyChanged("Status"); } }
+        public Enum.TaskStatus Status { get { return _status; } set { _status = value; NotifyPropertyChanged("StatusText"); } }
         /// <summary>
         /// Status display text
         /// </summary>
-        public string StatusText
-        {
-            get
-            {
-                return _status switch
-                {
-                    0 => "Idle",
-                    1 => "Sending",
-                    2 => "Success",
-                    3 => "LowPower",
-                    4 => "Error",
-                    _ => "Unknown",
-                };
-            }
-        }
-        double _battery = 0.0;
+        public string StatusText => _status.ToString();
+        float? _battery = 0.0F;
         /// <summary>
         /// Battery
         /// </summary>
-        public double Battery { get { return _battery; } set { _battery = value; NotifyPropertyChanged("Battery"); } }
-        int _rFPower = -256;
+        public float? Battery { get { return _battery; } set { _battery = value; NotifyPropertyChanged("Battery"); } }
+        int? _rFPower = -256;
         /// <summary>
         /// RF Power
         /// </summary>
-        public int RFPower { get { return _rFPower; } set { _rFPower = value; NotifyPropertyChanged("RFPower"); } }
-        int _temperature = 0;
+        public int? RFPower { get { return _rFPower; } set { _rFPower = value; NotifyPropertyChanged("RFPower"); } }
+        int? _temperature = 0;
         /// <summary>
         /// Temperature
         /// </summary>
-        public int Temperature { get { return _temperature; } set { _temperature = value; NotifyPropertyChanged("Temperature"); } }
+        public int? Temperature { get { return _temperature; } set { _temperature = value; NotifyPropertyChanged("Temperature"); } }
         int _token = 0;
         /// <summary>
         /// Token

@@ -1,3 +1,21 @@
+/****************************************************
+ *         Cronus.API - ESL Gen3 Middleware         *
+ **************************************************** 
+ * File:    Program
+ * Date:    06/06/2022
+ * Author:  Huang Hai Peng
+ * Summary: This class is the main class of Cronus.API
+ * (C) Suzhou ETAG Electronic Technology Co., Ltd
+****************************************************/
+
+// Cronus SendServer
+using Cronus;
+using Serilog;
+
+var config = new CronusConfig { };
+var log = LoggerFactory.Create(builder => builder.AddSerilog()).CreateLogger("Cronus");
+var result = SendServer.Instance.Start(config, log);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,29 +33,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-       new WeatherForecast
-       (
-           DateTime.Now.AddDays(index),
-           Random.Shared.Next(-20, 55),
-           summaries[Random.Shared.Next(summaries.Length)]
-       ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
+app.MapGet("/test", () => { return "OK"; }).WithName("CronusAPITest");
 app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

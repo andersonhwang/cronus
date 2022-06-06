@@ -101,6 +101,17 @@ namespace Cronus.Model
         }
         #endregion
 
+        #region Publick Methods
+        /// <summary>
+        /// Clone
+        /// </summary>
+        /// <returns>New task result object</returns>
+        public object Clone()
+        {
+            return new TaskResult(TaskID, TagID, Token);
+        }
+        #endregion
+
         #region Internal Methods
         /// <summary>
         /// Send
@@ -111,6 +122,12 @@ namespace Cronus.Model
             Status = Enum.TaskStatus.Sending;
             LastSendTime = DateTime.Now;
         }
+
+        /// <summary>
+        /// Set token
+        /// </summary>
+        /// <param name="token">Token</param>
+        internal void SetToken(int token) => Token = token;
 
         /// <summary>
         /// Process result
@@ -153,15 +170,6 @@ namespace Cronus.Model
         {
             Status = Enum.TaskStatus.Drop;
             return this;
-        }
-
-        /// <summary>
-        /// Clone
-        /// </summary>
-        /// <returns>New task result object</returns>
-        public  object Clone()
-        {
-            return new TaskResult(TaskID, TagID, Token);
         }
         #endregion
     }

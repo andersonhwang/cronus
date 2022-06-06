@@ -115,9 +115,10 @@ namespace Cronus.Model
                 {
                     aps.ForEach(ap => APs.Add(ap));     // All AP ID
                 }
-                TagData = new TagEntityX(TagID, 
+                A.SetToken(GetToken(Tag.Token));
+                TagData = new TagEntityX(TagID,
                     Server.Instance.GetTagData(
-                        task.TagID, GetToken(Tag.Token), task.Bitmap,
+                        task.TagID, A.Token, task.Bitmap,
                         task.R, task.G, task.B, task.Times));
 
                 return previous;
@@ -130,7 +131,7 @@ namespace Cronus.Model
         /// <param name="ap">Execute AP ID</param>
         internal void Transfer(string ap)
         {
-            lock(_locker)
+            lock (_locker)
             {
                 B = (TaskResult)A.Clone();
                 B.Send();
@@ -146,7 +147,7 @@ namespace Cronus.Model
         /// <returns>Need return</returns>
         internal bool WriteB(string ap, ResultEntity result)
         {
-            lock(_locker)
+            lock (_locker)
             {
                 if (BToken != result.Token) return false;
                 var needReturn = B?.ProcessResult(ap, result);      // Update task result
@@ -162,9 +163,8 @@ namespace Cronus.Model
         /// <returns>Next token</returns>
         internal int GetToken(int current)
         {
-            int previous = A is null ? B is null ? current : B.Token : A.Token;
-            current = (previous == current ? current : previous) + 1;
-            return current > 0xFFFF ? 1 : current == -1 ? 1 : current + 1;
+            if (++current < 0 || current > 0xFFFF) current = 0;
+            return current;
         }
 
         /// <summary>

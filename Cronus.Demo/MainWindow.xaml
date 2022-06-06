@@ -125,15 +125,15 @@
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Tag ID" Width="1*" Binding="{Binding TagID}" />
-                    <DataGridTextColumn Header="Tag Type" Width="1*" Binding="{Binding TagTypeText}" />
-                    <DataGridTextColumn Header="Status" Width="1*" Binding="{Binding StatusText}" />
+                    <DataGridTextColumn Header="Tag Type" Width="0.8*" Binding="{Binding TagTypeText}" />
+                    <DataGridTextColumn Header="Status" Width="0.6*" Binding="{Binding StatusText}" />
                     <DataGridTextColumn Header="Battery" Width="0.6*" Binding="{Binding Battery}" />
                     <DataGridTextColumn Header="RF Power" Width="0.7*" Binding="{Binding RFPower}" />
                     <DataGridTextColumn Header="Temperature" Width="1*" Binding="{Binding Temperature}" />
                     <DataGridTextColumn Header="Token" Width="0.6*" Binding="{Binding Token}" />
                     <DataGridTextColumn Header="Send Count" Width="1*" Binding="{Binding SendCount}" />
-                    <DataGridTextColumn Header="Last Send" Width="1*" Binding="{Binding LastSend}" />
-                    <DataGridTextColumn Header="Last Receive" Width="1*" Binding="{Binding LastRecv}" />
+                    <DataGridTextColumn Header="Last Send" Width="1.3*" Binding="{Binding LastSend}" />
+                    <DataGridTextColumn Header="Last Receive" Width="1.3*" Binding="{Binding LastRecv}" />
                     <DataGridTextColumn Header="Last AP" Width="0.7*" Binding="{Binding LastAP}" />
                 </DataGrid.Columns>
                 <DataGrid.ContextMenu>
