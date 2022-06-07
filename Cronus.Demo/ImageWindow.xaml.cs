@@ -83,7 +83,7 @@ namespace Cronus.Demo
                 }
 
                 var tasks = new List<TaskData>();
-                var bitmap = SKBitmap.FromImage(_imgBlackRed);
+                var bitmap = SKBitmap.FromImage(_imgOriginal);
                 TagIDs.ForEach(x =>{ tasks.Add(new TaskData(x, bitmap)); });
                 var result = SendServer.Instance.Push(tasks);
                 MessageBox.Show($"Send image: {result}", "Result");

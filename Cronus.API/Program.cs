@@ -34,4 +34,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapGet("/test", () => { return "OK"; }).WithName("CronusAPITest");
+app.MapPost("/pushImageSingle", () => { return "OK"; });
 app.Run();
