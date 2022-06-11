@@ -6,6 +6,7 @@ Note: Before you to put this middleware into your project, you must check both o
 The Cronus/Cronus folder is the middleware source code.
 The Cronus/Cronus.API folder is the API package source code for cross language platform to intergration (TODO).
 The Cronus/Cronus.Demo folder is a WPF desktop demo to using Cronus/Cronus.
+The Cronus/Cronus.NC31 folder is a .NET Core 3.1 copy from Cronus/Cronus folder, it using System.Drawing instead of SkiaSharp.
 
 ## Quick start:
 0. Add project reference;

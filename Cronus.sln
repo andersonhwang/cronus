@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cronus.API", "Cronus.API\Cr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cronus.Demo", "Cronus.Demo\Cronus.Demo.csproj", "{75771897-8936-496C-9AA8-30F6A5962AD2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cronus.NC31", "Cronus.NC31\Cronus.NC31.csproj", "{9BBA9636-A8B2-4FDD-9944-58B39F29168B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,14 @@ Global
 		{75771897-8936-496C-9AA8-30F6A5962AD2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{75771897-8936-496C-9AA8-30F6A5962AD2}.Release|ARM32.ActiveCfg = Release|Any CPU
 		{75771897-8936-496C-9AA8-30F6A5962AD2}.Release|ARM32.Build.0 = Release|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Debug|ARM32.ActiveCfg = Debug|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Debug|ARM32.Build.0 = Debug|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Release|ARM32.ActiveCfg = Release|Any CPU
+		{9BBA9636-A8B2-4FDD-9944-58B39F29168B}.Release|ARM32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
