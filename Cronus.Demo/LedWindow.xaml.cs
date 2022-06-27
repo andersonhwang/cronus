@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -10,14 +11,16 @@ namespace Cronus.Demo
     /// </summary>
     public partial class LedWindow : Window
     {
-        ILogger _logger;    // Logger
+        ILogger _logger;        // Logger
+        List<string> TagIDs;    // Tag ID list
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public LedWindow(ILogger logger)
+        public LedWindow(List<string> tagID, ILogger logger)
         {
             InitializeComponent();
+            TagIDs = tagID;
             _logger = logger;
         }
 
@@ -43,7 +46,7 @@ namespace Cronus.Demo
                 }
 
                 int.TryParse(txtTimes.Text, out int times);
-                var result = SendServer.Instance.LED(chkRed.IsChecked ?? false, chkGreen.IsChecked ?? false, chkBlue.IsChecked ?? false, times);
+                var result = SendServer.Instance.LED(chkRed.IsChecked ?? false, chkGreen.IsChecked ?? false, chkBlue.IsChecked ?? false, times, TagIDs);
                 _logger.LogInformation($"LED Flashing:{result}.");
                 Close();
             }

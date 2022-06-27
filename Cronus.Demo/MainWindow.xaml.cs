@@ -159,7 +159,20 @@ namespace Cronus.Demo
                     MessageBox.Show("There is no tag to flashing LED light!");
                     return;
                 }
-                LedWindow led = new LedWindow(_logger);
+                var ids = new List<string>();
+                if (dgTags.SelectedItems.Count == 0)
+                {
+                    ids.AddRange(ObcTagInfors.Select(x => x.TagID).ToList());
+                }
+                else
+                {
+                    foreach (var item in dgTags.SelectedItems)
+                    {
+                        var tag = item as TagInfor;
+                        ids.Add(tag.TagID);
+                    }
+                }
+                LedWindow led = new LedWindow(ids, _logger);
                 led.ShowDialog();
             }
             catch (Exception ex)
