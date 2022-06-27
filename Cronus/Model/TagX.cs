@@ -11,6 +11,7 @@
 ****************************************************/
 using Cronos.SDK;
 using Cronos.SDK.Entity;
+using Cronos.SDK.Enum;
 
 namespace Cronus.Model
 {
@@ -119,7 +120,8 @@ namespace Cronus.Model
                 TagData = new TagEntityX(TagID,
                     Server.Instance.GetTagData(
                         task.TagID, A.Token, task.Bitmap,
-                        task.R, task.G, task.B, task.Times));
+                        task.R, task.G, task.B, task.Times,
+                        task.Bitmap == null ? Pattern.LED : Pattern.UpdateDisplay));
 
                 return previous;
             }
