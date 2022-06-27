@@ -36,7 +36,7 @@ namespace Cronus.Demo
                     return;
                 }
 
-                if (!Regex.IsMatch(txtTimes.Text, "^/d{1,4}$"))
+                if (!Regex.IsMatch(txtTimes.Text, "^\\d{1,4}$"))
                 {
                     MessageBox.Show("Invalid flashing times.");
                     return;
