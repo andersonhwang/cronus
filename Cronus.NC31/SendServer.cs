@@ -232,11 +232,11 @@ namespace Cronus
                             allDone = false;
                             continue;
                         }
-                        if (task.Bitmap is null)
-                        {
-                            allDone = false;
-                            continue;
-                        }
+                        //if (task.Bitmap is null)
+                        //{
+                        //    allDone = false;
+                        //    continue;
+                        //}
                         var tagx = GetTagX(task.TagID, storeCode);
                         var result = tagx.WriteA(task, aps);
                         if (result != null) CoqTaskResults.Enqueue(result);
