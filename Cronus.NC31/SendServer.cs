@@ -265,7 +265,7 @@ namespace Cronus
         /// <param name="times">Flashing times</param>
         /// <param name="idList">ID list</param>
         /// <returns>Result</returns>
-        public Result LED(bool r, bool g, bool b, int times, List<string> idList = null)
+        public Result LED(bool r, bool g, bool b, int times, List<string> idList)
             => LED(_config.DefaultStoreCode, r, g, b, times, idList);
 
         /// <summary>
@@ -278,8 +278,10 @@ namespace Cronus
         /// <param name="times">Flashing times</param>
         /// <param name="idList">ID list</param>
         /// <returns>Result</returns>
-        public Result LED(string storeCode, bool r, bool g, bool b, int times, List<string> idList = null)
+        public Result LED(string storeCode, bool r, bool g, bool b, int times, List<string> idList)
         {
+            if (idList is null || idList.Count == 0) return Result.NullData;
+
             var tasks = new List<TaskData>();
             idList.ForEach(x => { tasks.Add(new TaskData(x, r, g, b, times)); });
             return Push(storeCode, tasks);
