@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Cronus\Cronus.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Response\" />
+  </ItemGroup>
+
 </Project>

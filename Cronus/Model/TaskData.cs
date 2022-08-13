@@ -7,6 +7,8 @@
  * Summary: The task data object class.
  * (C) Suzhou ETAG Electronic Technology Co., Ltd
 ****************************************************/
+using SkiaSharp;
+
 namespace Cronus.Model
 {
     /// <summary>
@@ -28,9 +30,9 @@ namespace Cronus.Model
         /// </summary>
         public string APID { get; private set; } = string.Empty;
         /// <summary>
-        /// Bitmap to send
+        /// Bitmap to send, only flashing LED light if is null.
         /// </summary>
-        public SkiaSharp.SKBitmap Bitmap { get; private set; } = null;
+        public SKBitmap? Bitmap { get; private set; } = null;
         /// <summary>
         /// Led light, red color
         /// </summary>
@@ -51,16 +53,11 @@ namespace Cronus.Model
 
         #region Constructor
         /// <summary>
-        /// Default cosntructor
-        /// </summary>
-        TaskData() { }
-
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="tagID">Tag ID</param>
         /// <param name="bitmap">SKBitmap</param>
-        public TaskData(string tagID, SkiaSharp.SKBitmap bitmap)
+        public TaskData(string tagID, SKBitmap bitmap)
         {
             TagID = tagID;
             Bitmap = bitmap;
@@ -72,7 +69,7 @@ namespace Cronus.Model
         /// <param name="apID">AP ID</param>
         /// <param name="tagID">Tag ID</param>
         /// <param name="bitmap">SKBitmap</param>
-        public TaskData(string apID, string tagID, SkiaSharp.SKBitmap bitmap)
+        public TaskData(string apID, string tagID, SKBitmap bitmap)
             : this(tagID, bitmap)
         {
             APID = apID;
