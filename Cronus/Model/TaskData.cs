@@ -7,6 +7,7 @@
  * Summary: The task data object class.
  * (C) Suzhou ETAG Electronic Technology Co., Ltd
 ****************************************************/
+using Cronos.SDK.Enum;
 using SkiaSharp;
 
 namespace Cronus.Model
@@ -34,6 +35,14 @@ namespace Cronus.Model
         /// </summary>
         public SKBitmap? Bitmap { get; private set; } = null;
         /// <summary>
+        /// Pattern, default is update and display
+        /// </summary>
+        public Pattern Pattern { get; private set; } = Pattern.UpdateDisplay;
+        /// <summary>
+        /// Page index, default is the 1st page
+        /// </summary>
+        public PageIndex Page { get; private set; } = PageIndex.P0;
+        /// <summary>
         /// Led light, red color
         /// </summary>
         public bool R { get; private set; } = false;
@@ -53,36 +62,42 @@ namespace Cronus.Model
 
         #region Constructor
         /// <summary>
-        /// Constructor
+        /// Constructor for image
         /// </summary>
         /// <param name="tagID">Tag ID</param>
         /// <param name="bitmap">SKBitmap</param>
-        public TaskData(string tagID, SKBitmap bitmap)
+        /// <param name="pattern">Pattern</param>
+        /// <param name="page">Page index</param>
+        public TaskData(string tagID, SKBitmap bitmap, Pattern pattern = Pattern.UpdateDisplay, PageIndex page = PageIndex.P0)
         {
             TagID = tagID;
             Bitmap = bitmap;
+            Pattern = pattern;
+            Page = page;
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor for image with specific ap ID
         /// </summary>
         /// <param name="apID">AP ID</param>
         /// <param name="tagID">Tag ID</param>
         /// <param name="bitmap">SKBitmap</param>
-        public TaskData(string apID, string tagID, SKBitmap bitmap)
-            : this(tagID, bitmap)
+        /// <param name="pattern">Pattern</param>
+        /// <param name="page">Page index</param>
+        public TaskData(string apID, string tagID, SKBitmap bitmap, Pattern pattern = Pattern.UpdateDisplay, PageIndex page = PageIndex.P0)
+            : this(tagID, bitmap, pattern, page)
         {
             APID = apID;
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor for led
         /// </summary>
-        /// <param name="tagID"></param>
-        /// <param name="r"></param>
-        /// <param name="g"></param>
-        /// <param name="b"></param>
-        /// <param name="times"></param>
+        /// <param name="tagID">Tag ID</param>
+        /// <param name="r">Red light</param>
+        /// <param name="g">Green light</param>
+        /// <param name="b">Blue light</param>
+        /// <param name="times">Flashing times</param>
         public TaskData(string tagID, bool r, bool g, bool b, int times)
         {
             if (times < 0) times = 0;
@@ -93,6 +108,22 @@ namespace Cronus.Model
             G = g;
             B = b;
             Times = times;
+            Pattern = Pattern.LED;
+        }
+
+        /// <summary>
+        /// Constructor for switch page
+        /// </summary>
+        /// <param name="tagID">Tag ID</param>
+        /// <param name="page">Page index</param>
+        public TaskData(string tagID, int page)
+        {
+            if (page < 0) page = 0;
+            else if (page > 7) page = 7;
+
+            TagID = tagID;
+            Pattern = Pattern.Display;
+            Page = (PageIndex)page;
         }
         #endregion
     }

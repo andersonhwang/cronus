@@ -17,4 +17,10 @@
     <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Cronus.SDK">
+      <HintPath>..\Cronus\SDK\Cronus.SDK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

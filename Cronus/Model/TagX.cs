@@ -121,7 +121,7 @@ namespace Cronus.Model
                     Server.Instance.GetTagData(
                         task.TagID, A.Token, task.Bitmap,
                         task.R, task.G, task.B, task.Times,
-                        task.Bitmap == null ? Pattern.LED : Pattern.UpdateDisplay));
+                        task.Pattern, task.Page));
 
                 return previous;
             }

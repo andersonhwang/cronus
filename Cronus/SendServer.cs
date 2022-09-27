@@ -280,6 +280,50 @@ namespace Cronus
             idList.ForEach(x => { tasks.Add(new TaskData(x, r, g, b, times)); });
             return Push(storeCode, tasks);
         }
+
+        /// <summary>
+        /// Swich page to display
+        /// </summary>
+        /// <param name="id">Tag ID</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(string id, int page)
+            => SwitchPage(new List<string> { id }, page);
+
+        /// <summary>
+        /// Swtich page to display
+        /// </summary>
+        /// <param name="idList">Tag ID list</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(List<string> idList, int page)
+            => SwitchPage(_config.DefaultStoreCode, idList, page);
+
+        /// <summary>
+        /// Swith page to display with store code
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="id">Tag ID</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(string storeCode, string id, int page)
+            => SwitchPage(storeCode, new List<string> { id }, page);
+
+        /// <summary>
+        /// Swith page to display with store code
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="idList">Tag ID list</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(string storeCode, List<string> idList, int page)
+        {
+            if (idList is null || idList.Count == 0) return Result.NullData;
+
+            var tasks = new List<TaskData>();
+            idList.ForEach(x => { tasks.Add(new TaskData(x, page)); });
+            return Push(storeCode, tasks);
+        }
         #endregion
 
         #region Broadcast
@@ -290,7 +334,7 @@ namespace Cronus
         /// <param name="page">Page to dispaly, from 0 to 3/7</param>
         /// <remarks>Some types have 4 pages cache, some types have 8 pages cahce. Please read the product introduce document.</remarks>
         /// <returns>Result</returns>
-        public Result SwitchPage(string storeCode, int page)
+        public Result SwitchPageAll(string storeCode, int page)
         {
             try
             {
@@ -321,7 +365,7 @@ namespace Cronus
         /// </summary>
         /// <param name="storeCode">Store code</param>
         /// <returns>Result</returns>
-        public Result DisplayBarcode(string storeCode)
+        public Result DisplayBarcodeAll(string storeCode)
         {
             try
             {

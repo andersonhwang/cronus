@@ -16,10 +16,12 @@ using Cronus.Events;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SkiaSharp;
+using System.Text.RegularExpressions;
 
 var config = new CronusConfig { };
 var log = LoggerFactory.Create(builder => builder.AddSerilog()).CreateLogger("Cronus");
 var builder = WebApplication.CreateBuilder(args);
+var regTagID = new Regex("^[0-9A-F]{12}$");
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -112,15 +114,16 @@ app.MapPost("/pushLed", ([FromBody] LedTask task) =>
 });
 #endregion
 
-#region API #5. [Broadcast] Switch Page
-app.MapGet("/switchPage", ([FromQuery(Name = "store")] string store, [FromQuery(Name = "page")] int page) =>
+#region API #5. Switch Page Specific
+app.MapGet("/switchPageSpecific", ([FromQuery(Name = "store")] string store, [FromQuery(Name = "page")] int page, [FromQuery(Name = "id")] string id) =>
 {
     try
     {
         if (string.IsNullOrEmpty(store)) return Results.BadRequest("NULL_DATA");
-        if (page < 0 || page > 7) return Results.BadRequest("NULL_DATA");
+        if (page < 0 || page > 7) return Results.BadRequest("INVALID_PAGE");
+        if (!regTagID.IsMatch(id)) return Results.BadRequest("INVALID_TAG_ID");
 
-        var result = SendServer.Instance.SwitchPage(store, page);
+        var result = SendServer.Instance.SwitchPage(store, id, page);
 
         return result == Result.OK ? Results.Ok() : Results.BadRequest(result.ToString());
     }
@@ -132,14 +135,34 @@ app.MapGet("/switchPage", ([FromQuery(Name = "store")] string store, [FromQuery(
 });
 #endregion
 
-#region API #6. [Broadcast] Display Barcode
-app.MapGet("/displayBarcode", ([FromQuery(Name="store")]string store) =>
+#region API #6. [Broadcast] Switch Page
+app.MapGet("/switchPage", ([FromQuery(Name = "store")] string store, [FromQuery(Name = "page")] int page) =>
+{
+    try
+    {
+        if (string.IsNullOrEmpty(store)) return Results.BadRequest("NULL_DATA");
+        if (page < 0 || page > 7) return Results.BadRequest("NULL_DATA");
+
+        var result = SendServer.Instance.SwitchPageAll(store, page);
+
+        return result == Result.OK ? Results.Ok() : Results.BadRequest(result.ToString());
+    }
+    catch (Exception ex)
+    {
+        log.LogError("PushLedError", ex);
+        return Results.StatusCode(500);
+    }
+});
+#endregion
+
+#region API #7. [Broadcast] Display Barcode
+app.MapGet("/displayBarcode", ([FromQuery(Name = "store")] string store) =>
 {
     try
     {
         if (string.IsNullOrEmpty(store)) return Results.BadRequest("NULL_DATA");
 
-        var result = SendServer.Instance.DisplayBarcode(store);
+        var result = SendServer.Instance.DisplayBarcodeAll(store);
 
         return result == Result.OK ? Results.Ok() : Results.BadRequest(result.ToString());
     }
@@ -165,7 +188,7 @@ void Instance_APEventHandler(object? sender, APStatusEventArgs e)
 void Instance_TaskEventHandler(object? sender, TaskResultEventArgs e)
 {
     // Here you can do DB update, API feedback and etc.
-    foreach(var result in e.TaskResults)
+    foreach (var result in e.TaskResults)
     {
         log.LogInformation(
             $"[TaskEventHandler]Tag ID:{result.TagID},Task ID:{result.TaskID},Last Send:{result.LastSendTime}," +

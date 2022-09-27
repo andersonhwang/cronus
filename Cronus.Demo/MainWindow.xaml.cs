@@ -95,7 +95,7 @@ namespace Cronus.Demo
         {
             try
             {
-                var result = SendServer.Instance.SwitchPage(_config.DefaultStoreCode, cobPage.SelectedIndex);
+                var result = SendServer.Instance.SwitchPageAll(_config.DefaultStoreCode, cobPage.SelectedIndex);
                 if (result == Enum.Result.NoApOnline)
                 {
                     MessageBox.Show("There is no AP online, please try again later.");
@@ -127,7 +127,7 @@ namespace Cronus.Demo
         {
             try
             {
-                var result = SendServer.Instance.DisplayBarcode(_config.DefaultStoreCode);
+                var result = SendServer.Instance.DisplayBarcodeAll(_config.DefaultStoreCode);
                 if (result == Enum.Result.NoApOnline)
                 {
                     MessageBox.Show("There is no AP online, please try again later.");
