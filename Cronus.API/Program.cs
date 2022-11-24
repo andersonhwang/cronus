@@ -16,6 +16,7 @@ using Cronus.Events;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SkiaSharp;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 var config = new CronusConfig { };
@@ -165,6 +166,44 @@ app.MapGet("/displayBarcode", ([FromQuery(Name = "store")] string store) =>
         var result = SendServer.Instance.DisplayBarcodeAll(store);
 
         return result == Result.OK ? Results.Ok() : Results.BadRequest(result.ToString());
+    }
+    catch (Exception ex)
+    {
+        log.LogError("PushLedError", ex);
+        return Results.StatusCode(500);
+    }
+});
+#endregion
+
+#region API #8. [Query] Query AP
+app.MapGet("/queryAP", ([FromQuery(Name = "store")] string store, [FromQuery(Name = "ap")] string ap) =>
+{
+    try
+    {
+        if (string.IsNullOrEmpty(store) || string.IsNullOrEmpty(ap)) return Results.BadRequest("NULL_DATA");
+
+        var result = SendServer.Instance.GetAPByID(store, ap);
+
+        return result == null ? Results.NotFound() : Results.Ok(result);
+    }
+    catch (Exception ex)
+    {
+        log.LogError("PushLedError", ex);
+        return Results.StatusCode(500);
+    }
+});
+#endregion
+
+#region API #9. [Query] Query Tag
+app.MapGet("/queryTag", ([FromQuery(Name = "id")] string id) =>
+{
+    try
+    {
+        if (string.IsNullOrEmpty(id)) return Results.BadRequest("NULL_DATA");
+
+        var tag = SendServer.Instance.GetTagByID(id);
+
+        return tag == null ? Results.NotFound() : Results.Ok(tag);
     }
     catch (Exception ex)
     {

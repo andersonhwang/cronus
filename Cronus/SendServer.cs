@@ -98,7 +98,7 @@ namespace Cronus
             {
                 _config = config;
                 _logger = log;
-                if(initToken) _random = new Random(DateTime.Now.Millisecond);
+                if (initToken) _random = new Random(DateTime.Now.Millisecond);
 
                 var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var version = Assembly.LoadFile(filePath + "/Cronus.dll").GetName().Version;
@@ -402,24 +402,37 @@ namespace Cronus
         /// </summary>
         /// <param name="storeCode">Store code</param>
         /// <returns>Tag list</returns>
-        public List<Tag> GetTags(string storeCode)
-        {
-            return string.IsNullOrEmpty(storeCode)
+        public List<Tag> GetTags(string storeCode) => string.IsNullOrEmpty(storeCode)
                 ? DicTagXs.Values.Select(x => x.Tag).ToList()
                 : DicTagXs.Values.Where(x => x.Tag.StoreCode == storeCode).Select(x => x.Tag).ToList();
-        }
+
+        /// <summary>
+        /// Get Tag
+        /// </summary>
+        /// <param name="tagID">Tag ID</param>
+        /// <returns>AP</returns>
+        public Tag? GetTagByID(string tagID) =>
+            DicTagXs.ContainsKey(tagID) ? DicTagXs[tagID].Tag : null;
 
         /// <summary>
         /// Get AP list
         /// </summary>
         /// <param name="storeCode">Store code, empty means global</param>
         /// <returns>AP list</returns>
-        public List<AP> GetAPList(string storeCode)
-        {
-            return DicAPs.ContainsKey(storeCode)
+        public List<AP> GetAPList(string storeCode) => DicAPs.ContainsKey(storeCode)
                 ? DicAPs[storeCode].Values.ToList()
                 : new List<AP>();
-        }
+
+        /// <summary>
+        /// Get AP
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="apID">AP ID</param>
+        /// <returns>AP</returns>
+        public AP? GetAPByID(string storeCode, string apID) => DicAPs.ContainsKey(storeCode)
+                ? DicAPs[storeCode].Values.ToList().FirstOrDefault(x => x.APID == apID)
+                : null;
+
         #endregion
         #endregion
 
@@ -501,7 +514,7 @@ namespace Cronus
                                 if (result == SdkResult.OK)
                                 {
                                     UpdateAP(store, ap, tasks[store][ap].Count);
-                                    foreach(var task in tasks[store][ap])
+                                    foreach (var task in tasks[store][ap])
                                     {
                                         CoqTaskResults.Enqueue(DicTagXs[task.TagID].B);
                                     }
