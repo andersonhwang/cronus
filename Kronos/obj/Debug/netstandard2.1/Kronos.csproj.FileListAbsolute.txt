@@ -1,9 +1,0 @@
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\bin\Debug\netstandard2.1\Kronos.deps.json
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\bin\Debug\netstandard2.1\Kronos.dll
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\bin\Debug\netstandard2.1\Kronos.pdb
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\Debug\netstandard2.1\Kronos.AssemblyInfoInputs.cache
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\Debug\netstandard2.1\Kronos.AssemblyInfo.cs
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\Debug\netstandard2.1\Kronos.csproj.CoreCompileInputs.cache
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\Debug\netstandard2.1\Kronos.dll
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\Debug\netstandard2.1\Kronos.pdb
-C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\Debug\netstandard2.1\Kronos.csprojAssemblyReference.cache
