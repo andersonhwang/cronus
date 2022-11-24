@@ -1,6 +1,0 @@
-C:\Users\huang\source\repos\eTag.SDK.Gen2\eTag.SDK.Gen2\bin\Debug\netstandard2.0\eTag.SDK.Gen2.deps.json
-C:\Users\huang\source\repos\eTag.SDK.Gen2\eTag.SDK.Gen2\bin\Debug\netstandard2.0\eTag.SDK.Gen2.dll
-C:\Users\huang\source\repos\eTag.SDK.Gen2\eTag.SDK.Gen2\obj\Debug\netstandard2.0\eTag.SDK.Gen2.csprojAssemblyReference.cache
-C:\Users\huang\source\repos\eTag.SDK.Gen2\eTag.SDK.Gen2\obj\Debug\netstandard2.0\eTag.SDK.Gen2.AssemblyInfoInputs.cache
-C:\Users\huang\source\repos\eTag.SDK.Gen2\eTag.SDK.Gen2\obj\Debug\netstandard2.0\eTag.SDK.Gen2.AssemblyInfo.cs
-C:\Users\huang\source\repos\eTag.SDK.Gen2\eTag.SDK.Gen2\obj\Debug\netstandard2.0\eTag.SDK.Gen2.csproj.CoreCompileInputs.cache
