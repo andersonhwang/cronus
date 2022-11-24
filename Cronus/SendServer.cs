@@ -39,6 +39,7 @@ namespace Cronus
         static ILogger _logger;         // Logger
         static CronusConfig _config;    // Configure
         static SendServer _instance;    // Instance of send server
+        static Random _random = null;  // Using random token 
 
         /// <summary>
         /// The instance of SendServer
@@ -89,13 +90,16 @@ namespace Cronus
         /// </summary>
         /// <param name="config">Cronus configure</param>
         /// <param name="log">ILogger</param>
+        /// <param name="initToken">Init token, default is true</param>
         /// <returns>Result</returns>
-        public Result Start(CronusConfig config, ILogger log = null)
+        public Result Start(CronusConfig config, ILogger log = null, bool initToken = true)
         {
             try
             {
                 _config = config;
                 _logger = log;
+                if(initToken) _random = new Random(DateTime.Now.Millisecond);
+
                 var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var version = Assembly.LoadFile(filePath + "/Cronus.dll").GetName().Version;
                 if (_logger is null)
@@ -621,7 +625,7 @@ namespace Cronus
             lock (_locker)
             {
                 if (DicTagXs.ContainsKey(tagID)) return DicTagXs[tagID];
-                DicTagXs.Add(tagID, new TagX(new Tag(tagID, storeCode)));
+                DicTagXs.Add(tagID, new TagX(new Tag(tagID, storeCode, _random)));
                 if (DicTagXs[tagID].Tag.StoreCode != storeCode)
                     DicTagXs[tagID].Tag.StoreCode = storeCode; // Update the store code
                 return DicTagXs[tagID];
