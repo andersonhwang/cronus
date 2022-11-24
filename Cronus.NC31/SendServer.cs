@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Cronus
 {
@@ -38,10 +39,10 @@ namespace Cronus
         readonly object _locker = new object();    // The locker
         readonly Regex RegTagID = new Regex("^[0-9A-F]{12}$");
         readonly Regex RegStoreCode = new Regex("^[0-9]{4}$");
-        readonly Dictionary<string, Dictionary<string, AP>> DicAPs = new Dictionary<string, Dictionary<string, AP>>();  // AP dictionary
-        readonly Dictionary<string, TagX> DicTagXs = new Dictionary<string, TagX>();    // TagX dictionary
-        readonly ConcurrentQueue<TaskResult> CoqTaskResults = new ConcurrentQueue<TaskResult>();    // Task results queue
-        readonly ConcurrentQueue<APStatusEventArgs> CoqAPEvents = new ConcurrentQueue<APStatusEventArgs>(); // AP events queue
+        readonly Dictionary<string, Dictionary<string, AP>> DicAPs = new Dictionary<string, Dictionary<string, AP>>(); // AP dictionary
+        readonly Dictionary<string, TagX> DicTagXs = new Dictionary<string, TagX>();                 // TagX dictionary
+        readonly ConcurrentQueue<TaskResult> CoqTaskResults = new ConcurrentQueue<TaskResult>();        // Task results queue
+        readonly ConcurrentQueue<APStatusEventArgs> CoqAPEvents = new ConcurrentQueue<APStatusEventArgs>();    // AP events queue
         static ILogger _logger;         // Logger
         static CronusConfig _config;    // Configure
         static SendServer _instance;    // Instance of send server
@@ -163,7 +164,7 @@ namespace Cronus
         /// Push image to tag, single store mode
         /// </summary>
         /// <param name="tagID">Tag ID</param>
-        /// <param name="image">SKImage</param>
+        /// <param name="image">Bitmap image</param>
         /// <returns>Push result</returns>
         public Result Push(string tagID, Bitmap image)
             => Push(_config.DefaultStoreCode, tagID, image);
@@ -173,7 +174,7 @@ namespace Cronus
         /// </summary>
         /// <param name="storeCode">Store code</param>
         /// <param name="tagID">Tag ID</param>
-        /// <param name="image">SKImage</param>
+        /// <param name="image">Bitmap image</param>
         /// <returns>Push result</returns>
         public Result Push(string storeCode, string tagID, Bitmap image)
         {
@@ -286,6 +287,50 @@ namespace Cronus
             idList.ForEach(x => { tasks.Add(new TaskData(x, r, g, b, times)); });
             return Push(storeCode, tasks);
         }
+
+        /// <summary>
+        /// Swich page to display
+        /// </summary>
+        /// <param name="id">Tag ID</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(string id, int page)
+            => SwitchPage(new List<string> { id }, page);
+
+        /// <summary>
+        /// Swtich page to display
+        /// </summary>
+        /// <param name="idList">Tag ID list</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(List<string> idList, int page)
+            => SwitchPage(_config.DefaultStoreCode, idList, page);
+
+        /// <summary>
+        /// Swith page to display with store code
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="id">Tag ID</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(string storeCode, string id, int page)
+            => SwitchPage(storeCode, new List<string> { id }, page);
+
+        /// <summary>
+        /// Swith page to display with store code
+        /// </summary>
+        /// <param name="storeCode">Store code</param>
+        /// <param name="idList">Tag ID list</param>
+        /// <param name="page">Page index</param>
+        /// <returns>The result</returns>
+        public Result SwitchPage(string storeCode, List<string> idList, int page)
+        {
+            if (idList is null || idList.Count == 0) return Result.NullData;
+
+            var tasks = new List<TaskData>();
+            idList.ForEach(x => { tasks.Add(new TaskData(x, page)); });
+            return Push(storeCode, tasks);
+        }
         #endregion
 
         #region Broadcast
@@ -296,7 +341,7 @@ namespace Cronus
         /// <param name="page">Page to dispaly, from 0 to 3/7</param>
         /// <remarks>Some types have 4 pages cache, some types have 8 pages cahce. Please read the product introduce document.</remarks>
         /// <returns>Result</returns>
-        public Result SwitchPage(string storeCode, int page)
+        public Result SwitchPageAll(string storeCode, int page)
         {
             try
             {
@@ -327,7 +372,7 @@ namespace Cronus
         /// </summary>
         /// <param name="storeCode">Store code</param>
         /// <returns>Result</returns>
-        public Result DisplayBarcode(string storeCode)
+        public Result DisplayBarcodeAll(string storeCode)
         {
             try
             {
@@ -388,7 +433,7 @@ namespace Cronus
         /// <returns>The task</returns>
         async Task TaskDispatcher()
         {
-            Exception pre = new Exception();
+            var pre = new Exception();
             int count = 0, noAP = 0, noWork = 0;
             while (true)
             {
@@ -459,7 +504,7 @@ namespace Cronus
                                 if (result == SdkResult.OK)
                                 {
                                     UpdateAP(store, ap, tasks[store][ap].Count);
-                                    foreach(var task in tasks[store][ap])
+                                    foreach (var task in tasks[store][ap])
                                     {
                                         CoqTaskResults.Enqueue(DicTagXs[task.TagID].B);
                                     }
@@ -497,7 +542,7 @@ namespace Cronus
         /// <returns>The task</returns>
         async Task TaskFeedback()
         {
-            Exception pre = new Exception();
+            var pre = new Exception();
             int count = 0;
             while (true)
             {
@@ -537,7 +582,7 @@ namespace Cronus
         /// <returns>The task</returns>
         async Task APFeedback()
         {
-            Exception pre = new Exception();
+            var pre = new Exception();
             int count = 0;
             while (true)
             {

@@ -74,11 +74,11 @@ namespace Cronus.Model
         /// <summary>
         /// Last send time
         /// </summary>
-        internal DateTime LastSend => B is null ? DateTime.Now : GetDateTime(B.LastSendTime);
+        internal DateTime LastSend => B is null ? DateTime.Now : B.LastSendTime ?? DateTime.Now;
         /// <summary>
         /// Last receive time
         /// </summary>
-        internal DateTime LastReceive => B is null ? DateTime.Now : GetDateTime(B.LastRecvTime);
+        internal DateTime LastReceive => B is null ? DateTime.Now : B.LastRecvTime ?? DateTime.Now;
 
         /// <summary>
         /// Constructor
@@ -124,7 +124,7 @@ namespace Cronus.Model
                     Server.Instance.GetTagData(
                         task.TagID, A.Token, task.Bitmap,
                         task.R, task.G, task.B, task.Times,
-                        task.Bitmap == null ? Pattern.LED : Pattern.UpdateDisplay));
+                        task.Pattern, task.Page));
 
                 return previous;
             }
@@ -181,7 +181,7 @@ namespace Cronus.Model
         {
             if (TagData is null) return false;
             if (AToken == BToken && (BToken == -1 || B.Status == Enum.TaskStatus.Success)) return false;
-            if (BToken != -1 && B.Status == Enum.TaskStatus.Sending && (DateTime.Now - GetDateTime(B.LastSendTime)).TotalMinutes < 5) return false;
+            if (BToken != -1 && B.Status == Enum.TaskStatus.Sending && (DateTime.Now - (B.LastSendTime ?? DateTime.Now)).TotalMinutes < 5) return false;
             if (APs.Count == 0) APs.AddRange(aps);
             return true;
         }
@@ -205,16 +205,5 @@ namespace Cronus.Model
         /// <param name="ap">AP ID</param>
         /// <returns>Same</returns>
         internal bool SameWay(string ap) => APs.Contains(ap);
-
-        /// <summary>
-        /// Get date time, or now time
-        /// </summary>
-        /// <param name="time">Datetime</param>
-        /// <returns>Datetime</returns>
-        internal DateTime GetDateTime(DateTime? time)
-        {
-            if (time.HasValue) return time.Value;
-            return DateTime.Now;
-        }
     }
 }

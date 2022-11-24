@@ -1,0 +1,10 @@
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\bin\Debug\netcoreapp3.1\Cronus.SDK.NC31.deps.json
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\bin\Debug\netcoreapp3.1\Cronus.SDK.NC31.dll
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\bin\Debug\netcoreapp3.1\Cronus.SDK.NC31.pdb
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\obj\Debug\netcoreapp3.1\Cronus.SDK.NC31.csproj.AssemblyReference.cache
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\obj\Debug\netcoreapp3.1\Cronus.SDK.NC31.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\obj\Debug\netcoreapp3.1\Cronus.SDK.NC31.AssemblyInfoInputs.cache
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\obj\Debug\netcoreapp3.1\Cronus.SDK.NC31.AssemblyInfo.cs
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\obj\Debug\netcoreapp3.1\Cronus.SDK.NC31.csproj.CoreCompileInputs.cache
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\obj\Debug\netcoreapp3.1\Cronus.SDK.NC31.dll
+C:\Users\huang\source\repos\Cronus\Kronos.NC31\obj\Debug\netcoreapp3.1\Cronus.SDK.NC31.pdb

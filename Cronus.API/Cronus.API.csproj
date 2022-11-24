@@ -21,4 +21,10 @@
     <Folder Include="Response\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Cronus.SDK">
+      <HintPath>..\Cronus\SDK\Cronus.SDK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

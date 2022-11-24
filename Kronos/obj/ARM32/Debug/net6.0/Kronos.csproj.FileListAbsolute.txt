@@ -1,0 +1,12 @@
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\bin\ARM32\Debug\net6.0\Kronos.deps.json
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\bin\ARM32\Debug\net6.0\Kronos.dll
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\bin\ARM32\Debug\net6.0\Kronos.pdb
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\Kronos.csproj.AssemblyReference.cache
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\Kronos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\Kronos.AssemblyInfoInputs.cache
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\Kronos.AssemblyInfo.cs
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\Kronos.csproj.CoreCompileInputs.cache
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\Kronos.dll
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\refint\Kronos.dll
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\Kronos.pdb
+C:\Users\huang\OneDrive\SDK.Kronos\Kronos\obj\ARM32\Debug\net6.0\ref\Kronos.dll
