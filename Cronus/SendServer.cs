@@ -342,12 +342,13 @@ namespace Cronus
         {
             try
             {
+                var rand = new Random(DateTime.Now.Millisecond);
                 var check = CheckBroadcast(storeCode);
                 if (check != Result.OK) return check;
 
                 foreach (var ap in Server.Instance.GetApOnlineList(storeCode))
                 {
-                    var result = Server.Instance.SwitchPage(storeCode, ap, 0, page);
+                    var result = Server.Instance.SwitchPage(storeCode, ap, rand.Next(0xFFFF), page);
                     if (result == SdkResult.OK)
                     {
                         CoqAPEvents.Enqueue(new APStatusEventArgs(storeCode, ap, APStatus.Working));
@@ -373,12 +374,13 @@ namespace Cronus
         {
             try
             {
+                var rand = new Random(DateTime.Now.Millisecond);
                 var check = CheckBroadcast(storeCode);
                 if (check != Result.OK) return check;
 
                 foreach (var ap in Server.Instance.GetApOnlineList(storeCode))
                 {
-                    var result = Server.Instance.DisplayBarcode(storeCode, ap, 0); // Default token is 0.
+                    var result = Server.Instance.DisplayBarcode(storeCode, ap, rand.Next(0xFFFF)); // Default token is 0.
                     if (result == SdkResult.OK)
                     {
                         CoqAPEvents.Enqueue(new APStatusEventArgs(storeCode, ap, APStatus.Working));
