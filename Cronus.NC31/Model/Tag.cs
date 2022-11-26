@@ -96,10 +96,12 @@ namespace Cronus.Model
         /// </summary>
         /// <param name="tagID">Tag ID</param>
         /// <param name="storeCode">Store code</param>
-        public Tag(string tagID, string storeCode)
+        /// <param name="random">Random token, default is null</param>
+        public Tag(string tagID, string storeCode, Random random = null)
         {
             TagID = tagID;
             StoreCode = storeCode;
+            if (random != null) Token = random.Next(0xFFFF);
         }
         #endregion
 
@@ -122,7 +124,7 @@ namespace Cronus.Model
         {
             Token = result.Token;
             LastRecvTime = DateTime.Now;
-            if(result.TagResult == Cronos.SDK.Enum.TagResult.Success)
+            if (result.TagResult == Cronos.SDK.Enum.TagResult.Success)
             {
                 DefaultAP = ap;
                 RfPower = result.RfPower;

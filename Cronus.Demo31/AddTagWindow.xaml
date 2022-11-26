@@ -1,0 +1,19 @@
+﻿<Window x:Class="Cronus.Demo.AddTagWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cronus.Demo"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" ResizeMode="NoResize"
+        Title="Add Tag" Height="250" Width="200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="One ID One Line:"/>
+        <TextBox Grid.Row="1" x:Name="txtIDList" TextChanged="txtIDList_TextChanged" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+        <Button Grid.Row="2" Content="Save" x:Name="btnSave" Click="btnSave_Click"/>
+    </Grid>
+</Window>

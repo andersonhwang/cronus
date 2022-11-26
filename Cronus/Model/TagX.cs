@@ -11,7 +11,6 @@
 ****************************************************/
 using Cronos.SDK;
 using Cronos.SDK.Entity;
-using Cronos.SDK.Enum;
 
 namespace Cronus.Model
 {

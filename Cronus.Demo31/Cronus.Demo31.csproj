@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cronus.NC31\Cronus.NC31.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Cronus.SDK">
+      <HintPath>..\Cronus\SDK\Cronus.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Cronus.SDK.NC31">
+      <HintPath>..\Cronus.NC31\SDK\Cronus.SDK.NC31.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

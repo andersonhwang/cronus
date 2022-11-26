@@ -67,7 +67,7 @@ namespace Cronus.Model
         /// Constructor for image
         /// </summary>
         /// <param name="tagID">Tag ID</param>
-        /// <param name="bitmap">Bitmap</param>
+        /// <param name="bitmap">SKBitmap</param>
         /// <param name="pattern">Pattern</param>
         /// <param name="page">Page index</param>
         public TaskData(string tagID, Bitmap bitmap, Pattern pattern = Pattern.UpdateDisplay, PageIndex page = PageIndex.P0)
@@ -83,7 +83,7 @@ namespace Cronus.Model
         /// </summary>
         /// <param name="apID">AP ID</param>
         /// <param name="tagID">Tag ID</param>
-        /// <param name="bitmap">Bitmap</param>
+        /// <param name="bitmap">SKBitmap</param>
         /// <param name="pattern">Pattern</param>
         /// <param name="page">Page index</param>
         public TaskData(string apID, string tagID, Bitmap bitmap, Pattern pattern = Pattern.UpdateDisplay, PageIndex page = PageIndex.P0)

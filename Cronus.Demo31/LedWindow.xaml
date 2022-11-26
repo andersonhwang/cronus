@@ -1,0 +1,27 @@
+﻿<Window x:Class="Cronus.Demo.LedWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cronus.Demo"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="Flashing LED Ligth" Height="70" Width="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="0.9*"/>
+            <ColumnDefinition Width="0.9*"/>
+            <ColumnDefinition Width="0.9*"/>
+            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Content="LED Colors:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <CheckBox Grid.Column="1" Content="Red" x:Name="chkRed" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"/>
+        <CheckBox Grid.Column="2" Content="Green" x:Name="chkGreen" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Green" FontWeight="Bold" />
+        <CheckBox Grid.Column="3" Content="Blue" x:Name="chkBlue" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Blue" FontWeight="Bold" />
+        <Label Grid.Column="4" Content="Flashing Times:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Grid.Column="5" x:Name="txtTimes" MaxLength="5" MaxLines="1" Text="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+        <Button Grid.Column="6" Name="btnSend" Content="Send" Click="btnSend_Click"/>
+    </Grid>
+</Window>
