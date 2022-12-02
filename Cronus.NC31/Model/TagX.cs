@@ -47,10 +47,6 @@ namespace Cronus.Model
         /// </summary>
         internal List<string> APs { get; private set; } = new List<string>();
         /// <summary>
-        /// AP ID - Default
-        /// </summary>
-        internal string AP0 { get; private set; } = string.Empty;
-        /// <summary>
         /// AP ID - Specific
         /// </summary>
         internal int Best { get; private set; } = -256;
@@ -86,7 +82,6 @@ namespace Cronus.Model
         internal TagX(Tag tag)
         {
             Tag = tag;
-            AP0 = tag.DefaultAP;
         }
 
         /// <summary>
@@ -110,9 +105,9 @@ namespace Cronus.Model
                 {
                     APs.Add(task.APID);
                 }
-                else if (!string.IsNullOrEmpty(AP0))    // Default AP ID
+                else if (!string.IsNullOrEmpty(Tag.DefaultAP))    // Default AP ID
                 {
-                    APs.Add(AP0);
+                    APs.Add(Tag.DefaultAP);
                 }
                 else
                 {

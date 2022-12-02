@@ -220,17 +220,18 @@ app.Run();
 void Instance_APEventHandler(object? sender, APStatusEventArgs e)
 {
     // Here you can do DB update, API feedback and etc.
-    Console.WriteLine($"[APEventHandler]Store Code:{e.StoreCode},AP ID:{e.APID},Status:{e.Status}");
+    Console.WriteLine($"[{DateTime.Now.ToShortTimeString()}][APEventHandler]Store Code:{e.StoreCode},AP ID:{e.APID},Status:{e.Status}");
 }
 
 // Task event handler
 void Instance_TaskEventHandler(object? sender, TaskResultEventArgs e)
 {
     // Here you can do DB update, API feedback and etc.
+    Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}]AP {e.TaskResults} Recieved:({e.TaskResults.Count})");
     foreach (var result in e.TaskResults)
     {
         Console.WriteLine(
-            $"[TaskEventHandler]Tag ID:{result.TagID},Task ID:{result.TaskID},Last Send:{result.LastSendTime}," +
+            $"[{DateTime.Now.ToShortTimeString()}][TaskEventHandler]Tag ID:{result.TagID},Task ID:{result.TaskID},Last Send:{result.LastSendTime}," +
             $"Last Recieve:{result.LastRecvTime},Send Count:{result.SendCount},Status:{result.Status}," +
             $"RF Power:{result.RfPower},Battery:{result.Battery},Temperature:{result.Temperature}.");
     }
