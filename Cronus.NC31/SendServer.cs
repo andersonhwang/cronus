@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using System.Text;
 
 namespace Cronus
 {
@@ -499,8 +500,14 @@ namespace Cronus
                             foreach (var ap in tasks[store].Keys)
                             {
                                 if (tasks[store][ap].Count == 0) continue;
+                                var builder = new StringBuilder();
                                 var result = Server.Instance.SendDataX(store, ap, tasks[store][ap]);
+                                tasks[store][ap].ForEach(x => {
+                                    foreach (var b in x.Data) builder.Append(b.ToString("X2"));
+                                    builder.AppendLine();
+                                });
                                 Log.Information($"[Cronus]{store}-{ap} send {tasks[store][ap].Count}: {result}");
+                                Log.Debug(builder.ToString());
                                 if (result == SdkResult.OK)
                                 {
                                     UpdateAP(store, ap, tasks[store][ap].Count);

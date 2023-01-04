@@ -44,6 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.Urls.Add("http://*:5000");
 app.UseHttpsRedirection();
 #region API #0. Test
 app.MapGet("/test", () => { return "OK"; }).WithName("CronusAPITest");
