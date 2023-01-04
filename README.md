@@ -26,3 +26,12 @@ var result = SendServer.Instance.Send(tagID, image);
 
 For more information, please read the D19 documet.
 Some sections are still under construct, for issues and bugs please let me know, thanks.
+
+## Deploy in Linux
+Run below command before start:
+```
+apt update
+apt install libicu70
+apt install -y libfontconfig1
+```
+Note: For different OS, please refer to https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#dependencies
