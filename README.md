@@ -35,3 +35,6 @@ apt install libicu70
 apt install -y libfontconfig1
 ```
 Note: For different OS, please refer to https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#dependencies
+
+## HTTP Code 500 (Server Error)
+1. Because of different version of SkiaSharp library on different OS, if your platform is Linux, please check the libSkiaSharp.so has been copied to your API application folder.
